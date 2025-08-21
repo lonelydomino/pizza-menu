@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
   {
@@ -48,25 +49,69 @@ const pizzaData = [
 
 const App = () => {
   return (
-    <>
-      {" "}
-      <div> App</div>
-      <Pizza />
-      <Pizza />
-      <Pizza />
-    </>
-  );
-};
-
-const Pizza = () => {
-  return (
-    <div>
-      <img src="pizzas/spinaci.jpg" alt="Pizza Spinaci" />
-      <h1>Pizza</h1>
-      <h2>Tomato, mozarella, spinach, and ricotta cheese</h2>
+    <div className="container">
+      <Header />
+      <Menu />
+      <Footer />
     </div>
   );
 };
+
+const Header = () => {
+  return (
+    <header className="header">
+      <h1>Fast React Pizza Co.</h1>
+    </header>
+  );
+};
+const Menu = () => {
+  const pizzas = pizzaData;
+  const numPizzas = pizzas.length;
+  return (
+    <main className="menu">
+      <h2>Our Menu</h2>
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzas.map((pizza) => (
+            <Pizza
+              name={pizza.name}
+              ingredient={pizza.ingredients}
+              photoName={pizza.photoName}
+              price={pizza.price}
+            />
+          ))}
+        </ul>
+      ) : null}
+    </main>
+  );
+};
+const Pizza = (props) => {
+  return (
+    <li className="pizza">
+      <img src={props.photoName} alt={props.name} />
+      <div>
+        <h3>{props.name}</h3>
+        <p>{props.ingredients}</p>
+        <span>{props.price}</span>.
+      </div>
+    </li>
+  );
+};
+const Footer = () => {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  return (
+    <div>
+      <footer className="footer">
+        {isOpen ? "We're open until {{closeHour}}" : "closed"}!
+        <button>Order</button>
+      </footer>
+    </div>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
